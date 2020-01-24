@@ -4,7 +4,7 @@
     "keywords": ["laravel", "eloquent", "encrypt", "decrypt", "models", "database"],
     "type": "library",
     "require": {
-        "php": ">=7.1",
+        "php": ">=7.2.1",
         "laravel/framework": "^6.0"
     },
     "license": "Apache-2.0",
