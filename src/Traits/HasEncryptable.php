@@ -8,40 +8,44 @@ use Illuminate\Support\Facades\Crypt;
 trait HasEncryptable
 {
     /**
-     * @param string $key
+     * Decrypt the column value if it is in the encrypted array.
+     *
+     * @param $key
      *
      * @return mixed
      */
-    public function getAttribute(string $key)
+    public function getAttribute($key)
     {
         $value = parent::getAttribute($key);
 
-        if (! in_array($key, $this->encryptable) || is_null($value) || $value === '') {
-            return $value;
+        if (in_array($key, $this->encryptedFields ?? [])) {
+            $value = self::decryptValue($value);
         }
 
-        return self::decryptValue($value);
+        return $value;
     }
 
     /**
-     * @param string $key
-     * @param mixed  $value
+     * Set the value, encrypting it if it is in the encrypted array.
      *
-     * @return mixed
+     * @param $key
+     * @param $value
+     *
+     * @return
      */
-    public function setAttribute(string $key, $value)
+    public function setAttribute($key, $value)
     {
-        if (! in_array($key, $this->encryptable)) {
-            return parent::setAttribute($key, $value);
+        if ($value !== null && in_array($key, $this->encryptedFields ?? [])) {
+            $value = self::encryptValue($value);
         }
-
-        $value = self::encryptValue($value);
 
         return parent::setAttribute($key, $value);
     }
 
     /**
-     * @return array
+     * Retrieves all values and decrypts them if needed.
+     *
+     * @return mixed
      */
     public function attributesToArray(): array
     {
@@ -52,7 +56,7 @@ trait HasEncryptable
         }
 
         foreach ($attributes as $key => $value) {
-            if (! in_array($key, $this->encryptable) || is_null($value) || $value === '') {
+            if (! in_array($key, $this->encryptedFields) || is_null($value) || $value === '') {
                 continue;
             }
 

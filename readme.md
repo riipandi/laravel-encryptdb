@@ -18,7 +18,7 @@ composer require riipandi/laravel-encryptdb
 ### Usage
 
 1. Use the  trait in your model: `use Riipandi\LaravelEncryptDb\Traits\HasEncryptable`
-2. Define a protected `$encryptable` array containing a list of the encrypted attributes.
+2. Define a protected `$encryptedFields` array containing a list of the encrypted attributes.
 
 ```php
 <?php
@@ -32,7 +32,7 @@ class CreditCard extends Model
 {
     use HasEncryptable;
 
-    protected $encryptable = [
+    protected $encryptedFields = [
         'card_number',
         'cvv_code',
     ];
