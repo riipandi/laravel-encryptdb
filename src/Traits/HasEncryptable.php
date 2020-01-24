@@ -52,7 +52,7 @@ trait HasEncryptable
         }
 
         foreach ($attributes as $key => $value) {
-            if (!in_array($key, $this->encryptable) || is_null($value) || $value === '') {
+            if (! in_array($key, $this->encryptable) || is_null($value) || $value === '') {
                 continue;
             }
 
@@ -71,7 +71,9 @@ trait HasEncryptable
     {
         try {
             $value = Crypt::encrypt($value);
-        } catch (Exception $e) {}
+        } catch (Exception $e) {
+            //
+        }
 
         return $value;
     }
@@ -85,7 +87,9 @@ trait HasEncryptable
     {
         try {
             $value = Crypt::decrypt($value);
-        } catch (Exception $e) {}
+        } catch (Exception $e) {
+            //
+        }
 
         return $value;
     }
